@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS account(
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    amount DOUBLE NOT NULL,
+    id VARCHAR(50) PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS purchased(
+    id VARCHAR(50) NOT NULL,
+    item VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    purchased_id INT AUTO_INCREMENT PRIMARY KEY
+);

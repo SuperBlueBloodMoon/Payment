@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+    <h1>무엇이든 결제하기</h1>
+    <form action="/payment" method="get">
+        <p><h2>품목</h2>
+        삼성 라이온즈(1000) : <input type="checkbox" name="items" value="1000">
+        기아 타이거즈(2000) : <input type="checkbox" name="items" value="2000">
+        한화 이글스(3000) : <input type="checkbox" name="items" value="3000"></p>
+        <button type="submit">결제</button>
+    </form>
+    <br>
+    <form action="/addMoney" method="post">
+        입금 하기<br>
+        <input type="text" name="money">
+        <button type="submit">입금</button>
+    </form>
+    <br>
+    <form action="/checkAmount" method="get">
+        잔액 확인<br>
+        <button type="submit">잔액 확인</button>
+    </form>
+    <h2><span th:text="${result}"></span></h2>
+    <table>
+        <tr><td th:text="${item1}"></td><td th:text="${value1}"></td></tr>
+        <tr><td th:text="${item2}"></td><td th:text="${value2}"></td></tr>
+        <tr><td th:text="${item3}"></td><td th:text="${value3}"></td></tr>
+    </table>
+    <br>
+    <form action="/refund" method="post">
+        <div th:each="value: ${values}">
+            <label th:text="${value.key} + ' : '"></label>
+            <select th:name="${value.key}">
+                <option th:each="entry: ${value.value}" th:value="${entry}" th:text="${entry}"></option>
+            </select>
+            <br>
+        </div>
+        <br>
+        <button type="submit">환불</button>
+    </form>
+    <br>
+    <a href="/main?logout">Log out</a>
+</body>
+</html>
