@@ -1,8 +1,10 @@
 package com.example.Payment.service;
 
 import com.example.Payment.model.Client;
-import com.example.Payment.model.Log;
-import com.example.Payment.repository.*;
+import com.example.Payment.repository.ChangeAccountRepository;
+import com.example.Payment.repository.ChangeRefundRepository;
+import com.example.Payment.repository.CheckAccountRepository;
+import com.example.Payment.repository.CheckQuantityRefundRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,17 +18,15 @@ public class PaymentService {
     private final ChangeAccountRepository changeAccountRepository;
     private final ChangeRefundRepository changeRefundRepository;
     private final CheckQuantityRefundRepository checkQuantityRefundRepository;
-    private final CreateLogRepository createLogRepository;
 
     public PaymentService(CheckAccountRepository checkAccountRepository, LoggedUserManagementService loggedUserManagementService,
                           ChangeAccountRepository changeAccountRepository,  ChangeRefundRepository changeRefundRepository,
-                          CheckQuantityRefundRepository checkQuantityRefundRepository, CreateLogRepository createLogRepository) {
+                          CheckQuantityRefundRepository checkQuantityRefundRepository) {
         this.checkAccountRepository = checkAccountRepository;
         this.loggedUserManagementService = loggedUserManagementService;
         this.changeAccountRepository = changeAccountRepository;
         this.changeRefundRepository = changeRefundRepository;
         this.checkQuantityRefundRepository = checkQuantityRefundRepository;
-        this.createLogRepository = createLogRepository;
     }
 
     public Client getClientByUsername() {
@@ -65,29 +65,14 @@ public class PaymentService {
         if (value1 != 0) {
             int quantity1 = checkQuantityRefundRepository.getItemQuantity(client.getId(), "1000");
             changeRefundRepository.updateRefundAccount(client.getId(),value1+quantity1,"1000");
-            Log log1 = new Log();
-            log1.setId(client.getId());
-            log1.setItem("1000");
-            log1.setStatus("결제");
-            createLogRepository.createLog(log1);
         }
         if (value2 != 0) {
             int quantity2 = checkQuantityRefundRepository.getItemQuantity(client.getId(), "2000");
             changeRefundRepository.updateRefundAccount(client.getId(),value2+quantity2,"2000");
-            Log log2 = new Log();
-            log2.setId(client.getId());
-            log2.setItem("2000");
-            log2.setStatus("결제");
-            createLogRepository.createLog(log2);
         }
         if (value3 != 0) {
             int quantity3 = checkQuantityRefundRepository.getItemQuantity(client.getId(), "3000");
             changeRefundRepository.updateRefundAccount(client.getId(),value3+quantity3,"3000");
-            Log log3 = new Log();
-            log3.setId(client.getId());
-            log3.setItem("3000");
-            log3.setStatus("결제");
-            createLogRepository.createLog(log3);
         }
         changeAccountRepository.updateAccount(client.getUsername(), amount);
         return "남은 잔액 " + amount.toString();

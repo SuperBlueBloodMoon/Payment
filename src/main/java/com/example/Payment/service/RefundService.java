@@ -2,7 +2,6 @@ package com.example.Payment.service;
 
 import com.example.Payment.model.Client;
 import com.example.Payment.model.ItemCount;
-import com.example.Payment.model.Log;
 import com.example.Payment.model.Purchased;
 import com.example.Payment.repository.*;
 import org.springframework.stereotype.Service;
@@ -18,18 +17,16 @@ public class RefundService {
     private final CheckQuantityRefundRepository checkQuantityRefundRepository;
     private final ChangeAccountRepository changeAccountRepository;
     private final LoginRepository loginRepository;
-    private final CreateLogRepository createLogRepository;
 
     public RefundService(CheckRefundRepository checkRefundRepository, CreateRefundRepository createRefundRepository,
                          ChangeRefundRepository changeRefundRepository, CheckQuantityRefundRepository checkQuantityRefundRepository,
-                         ChangeAccountRepository changeAccountRepository, LoginRepository loginRepository, CreateLogRepository createLogRepository) {
+                         ChangeAccountRepository changeAccountRepository, LoginRepository loginRepository) {
         this.checkRefundRepository = checkRefundRepository;
         this.createRefundRepository = createRefundRepository;
         this.changeRefundRepository = changeRefundRepository;
         this.checkQuantityRefundRepository = checkQuantityRefundRepository;
         this.changeAccountRepository = changeAccountRepository;
         this.loginRepository = loginRepository;
-        this.createLogRepository = createLogRepository;
     }
 
     public List<ItemCount> getItemCount(String id) {
@@ -52,13 +49,6 @@ public class RefundService {
         int value = checkQuantityRefundRepository.getItemQuantity(id, item);
         if (value - quantity < 0){
             return "환불 불가";
-        }
-        for (int i = 0; i < quantity; i++) {
-            Log log = new Log();
-            log.setId(id);
-            log.setItem(item);
-            log.setStatus("환불");
-            createLogRepository.createLog(log);
         }
         changeRefundRepository.updateRefundAccount(id,value-quantity,item);
         BigDecimal mulValue = new BigDecimal(quantity);
