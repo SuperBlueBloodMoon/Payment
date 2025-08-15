@@ -60,6 +60,7 @@ public class RefundService {
             log.setStatus("환불");
             createLogRepository.createLog(log);
         }
+        
         changeRefundRepository.updateRefundAccount(id,value-quantity,item);
         BigDecimal mulValue = new BigDecimal(quantity);
         BigDecimal refundAmount = new BigDecimal(item).multiply(mulValue);
